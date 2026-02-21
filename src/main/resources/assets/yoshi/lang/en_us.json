@@ -1,4 +1,13 @@
 {
-  "key.yoshi.reel_in": "Reel In",
+  "death.attack.gulp": "%s was turned into an egg",
+  "death.attack.gulp.player": "%s was turned into an egg by %s",
+  "death.attack.gulp.item": "%s was turned into an egg by %s using %s",
+  
+  "item.yoshi.yoshi_egg": "Yoshi Egg",
+  
+  "entity.yoshi.yoshi_egg": "Yoshi Egg",
+  
+  "key.yoshi.reel_in": "Gulp",
+  "key.yoshi.create_egg": "Lay Egg",
   "category.yoshi.abilities": "Yoshi Abilities"
 }

@@ -11,18 +11,28 @@ import java.util.stream.Collectors;
 
 public class EntityDetection {
     private static final Logger LOGGER = LoggerFactory.getLogger("Yoshi/EntityDetection");
-    private static final double MAX_RANGE = 3.0;
-    private static final double MAX_ANGLE_DEGREES = 10.0;
+    private static final double MAX_RANGE = 4.0;
+    private static final double MAX_ANGLE_DEGREES = 40.0;
     private static final double MAX_ANGLE_RADIANS = Math.toRadians(MAX_ANGLE_DEGREES);
     
     public static Entity getTargetEntity(PlayerEntity player) {
-        if (player.getWorld() == null) {
-            LOGGER.info("Player world is null, cannot detect entities");
+        List<Entity> targets = getTargetEntities(player);
+        if (targets.isEmpty()) {
             return null;
         }
         
-        LOGGER.info("Starting entity detection for player {}", player.getName().getString());
-        LOGGER.info("Detection parameters: max range = {} blocks, max angle = {} degrees", MAX_RANGE, MAX_ANGLE_DEGREES);
+        // Return the closest entity for backward compatibility
+        return targets.get(0);
+    }
+    
+    public static List<Entity> getTargetEntities(PlayerEntity player) {
+        if (player.getWorld() == null) {
+            LOGGER.debug("Player world is null, cannot detect entities");
+            return java.util.Collections.emptyList();
+        }
+        
+        LOGGER.debug("Starting entity detection for player {}", player.getName().getString());
+        LOGGER.debug("Detection parameters: max range = {} blocks, max angle = {} degrees", MAX_RANGE, MAX_ANGLE_DEGREES);
         
         // Get all entities within range
         List<Entity> entitiesInRange = player.getWorld().getOtherEntities(
@@ -31,7 +41,7 @@ public class EntityDetection {
             entity -> {
                 // Filter out invalid entities
                 if (entity == player || entity.isRemoved() || !entity.isAlive()) {
-                    LOGGER.info("Filtering out entity {}: invalid (player={}, removed={}, alive={})", 
+                    LOGGER.debug("Filtering out entity {}: invalid (player={}, removed={}, alive={})", 
                         entity.getName().getString(), entity == player, entity.isRemoved(), entity.isAlive());
                     return false;
                 }
@@ -44,34 +54,33 @@ public class EntityDetection {
                 
                 // Calculate closest distance between bounding boxes
                 double closestDistance = getClosestDistanceBetweenBoundingBoxes(player, entity);
-                LOGGER.info("Entity {}: within range = {}, within angle = {}, closest distance = {} blocks", 
+                LOGGER.debug("Entity {}: within range = {}, within angle = {}, closest distance = {} blocks", 
                     entity.getName().getString(), withinRange, withinAngle, String.format("%.2f", closestDistance));
                 
                 return withinRange && withinAngle;
             }
         );
         
-        LOGGER.info("Found {} entities in range and angle", entitiesInRange.size());
+        LOGGER.debug("Found {} entities in range and angle", entitiesInRange.size());
         
-        // Sort by closest distance and return closest
-        Entity target = entitiesInRange.stream()
+        // Sort by closest distance
+        List<Entity> sortedTargets = entitiesInRange.stream()
             .sorted((e1, e2) -> {
                 double dist1 = getClosestDistanceBetweenBoundingBoxes(player, e1);
                 double dist2 = getClosestDistanceBetweenBoundingBoxes(player, e2);
                 return Double.compare(dist1, dist2);
             })
-            .findFirst()
-            .orElse(null);
+            .collect(java.util.stream.Collectors.toList());
         
-        if (target != null) {
-            double distance = getClosestDistanceBetweenBoundingBoxes(player, target);
-            LOGGER.debug("Selected target entity: {} at closest distance {} blocks", 
-                target.getName().getString(), String.format("%.2f", distance));
+        if (!sortedTargets.isEmpty()) {
+            double distance = getClosestDistanceBetweenBoundingBoxes(player, sortedTargets.get(0));
+            LOGGER.debug("Selected {} target entities, closest at distance {} blocks", 
+                sortedTargets.size(), String.format("%.2f", distance));
         } else {
-            LOGGER.debug("No valid target entity found");
+            LOGGER.debug("No valid target entities found");
         }
         
-        return target;
+        return sortedTargets;
     }
     
     private static boolean isEntityBoundingBoxInRange(PlayerEntity player, Entity entity, double maxRange) {

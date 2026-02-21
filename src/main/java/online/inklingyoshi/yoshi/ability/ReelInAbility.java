@@ -15,20 +15,20 @@ public class ReelInAbility {
     private static final int MAX_REEL_IN_TICKS = 20; // 1 second
     
     public void startReelIn(PlayerEntity player) {
-        LOGGER.info("Starting reel-in ability for player {}", player.getName().getString());
+        LOGGER.debug("Starting reel-in ability for player {}", player.getName().getString());
         targetEntity = EntityDetection.getTargetEntity(player);
         reelInTicks = 0;
         
         if (targetEntity != null) {
-            LOGGER.info("Reel-in ability started with target: {}", targetEntity.getName().getString());
+            LOGGER.debug("Reel-in ability started with target: {}", targetEntity.getName().getString());
         } else {
-            LOGGER.info("Reel-in ability started but no target found");
+            LOGGER.debug("Reel-in ability started but no target found");
         }
     }
     
     public void updateReelIn(PlayerEntity player) {
         if (targetEntity == null || !targetEntity.isAlive() || targetEntity.isRemoved()) {
-            LOGGER.info("Reel-in target is invalid (null={}, alive={}, removed={}), resetting", 
+            LOGGER.debug("Reel-in target is invalid (null={}, alive={}, removed={}), resetting", 
                 targetEntity == null, targetEntity != null && targetEntity.isAlive(), targetEntity != null && targetEntity.isRemoved());
             reset();
             return;
@@ -42,12 +42,12 @@ public class ReelInAbility {
         // Calculate distance
         double distance = entityPos.distanceTo(playerPos);
         
-        LOGGER.info("Reel-in update: target={}, distance={}, ticks={}/{}", 
+        LOGGER.debug("Reel-in update: target={}, distance={}, ticks={}/{}", 
             targetEntity.getName().getString(), distance, reelInTicks, MAX_REEL_IN_TICKS);
         
         // Check if entity is close enough
         if (distance < 1.0) {
-            LOGGER.info("Target {} is close enough, performing throw-back and damage", targetEntity.getName().getString());
+            LOGGER.debug("Target {} is close enough, performing throw-back and damage", targetEntity.getName().getString());
             // Perform throw-back and damage
             throwBackAndDamage(player);
             reset();
@@ -58,7 +58,7 @@ public class ReelInAbility {
         double speed = distance * 0.1; // Slower as it gets closer
         Vec3d velocity = direction.multiply(speed);
         
-        LOGGER.info("Applying velocity to target: {} (speed={})", velocity, speed);
+        LOGGER.debug("Applying velocity to target: {} (speed={})", velocity, speed);
         
         // Apply velocity
         targetEntity.setVelocity(velocity);
@@ -69,7 +69,7 @@ public class ReelInAbility {
         
         // Check if max time reached
         if (reelInTicks >= MAX_REEL_IN_TICKS) {
-            LOGGER.info("Max reel-in time reached, resetting");
+            LOGGER.debug("Max reel-in time reached, resetting");
             reset();
         }
     }
@@ -89,11 +89,11 @@ public class ReelInAbility {
     
     private void throwBackAndDamage(PlayerEntity player) {
         if (targetEntity == null) {
-            LOGGER.info("Cannot perform throw-back: target is null");
+            LOGGER.debug("Cannot perform throw-back: target is null");
             return;
         }
         
-        LOGGER.info("Performing throw-back and damage on target {}", targetEntity.getName().getString());
+        LOGGER.debug("Performing throw-back and damage on target {}", targetEntity.getName().getString());
         
         // Calculate throw-back direction (opposite to player's view)
         Vec3d viewDirection = player.getRotationVec(1.0F);
@@ -105,11 +105,11 @@ public class ReelInAbility {
         targetEntity.setVelocity(throwBackVelocity);
         targetEntity.velocityModified = true;
         
-        LOGGER.info("Applied throw-back velocity: {}", throwBackVelocity);
+        LOGGER.debug("Applied throw-back velocity: {}", throwBackVelocity);
         
         // Deal 6 armor piercing damage
         // Use a damage source that bypasses armor
         targetEntity.damage(DamageSourceUtil.createArmorPiercingDamageSource(player), 6.0F);
-        LOGGER.info("Applied 6 armor piercing damage to {}", targetEntity.getName().getString());
+        LOGGER.debug("Applied 6 armor piercing damage to {}", targetEntity.getName().getString());
     }
 }
