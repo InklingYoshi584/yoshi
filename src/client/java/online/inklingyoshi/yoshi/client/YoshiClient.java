@@ -15,11 +15,11 @@ import online.inklingyoshi.yoshi.util.CooldownManager;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 public class YoshiClient implements ClientModInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger("Yoshi/Client");
     private final ReelInAbility reelInAbility = new ReelInAbility();
     public static int jumpTime = 0;
+    private static boolean wasFluttering = false;
     @Override
     public void onInitializeClient() {
         LOGGER.debug("Initializing Yoshi client mod");
@@ -99,31 +99,51 @@ public class YoshiClient implements ClientModInitializer {
             PlayerEntity player = client.player;
             KeyBinding jumpKey = client.options.jumpKey;
             
+            // Check if player was fluttering but released spacebar
+            if (wasFluttering && !jumpKey.isPressed()) {
+                LOGGER.info("---Flutter jump ended prematurely (spacebar released)");
+                // Send packet to end flutter jump
+                ClientNetworking.sendFlutterJumpPacket(true, true);
+                wasFluttering = false;
+                jumpTime = 0;
+            }
+            
             // Check if player is in midair and holding spacebar
-            if (!player.isOnGround() && !player.isTouchingWater() && jumpKey.isPressed()) {
+            if (!player.isOnGround() && !player.isTouchingWater() && jumpKey.isPressed() && !player.isFallFlying() && !player.isCreative()) {
                 LOGGER.debug("Flutter jump conditions met: onGround={}, touchingWater={}, jumpPressed={}, velocityY={}", 
                     player.isOnGround(), player.isTouchingWater(), jumpKey.isPressed(), player.getVelocity().y);
-                
-                // Check cooldown
+                LOGGER.info("wasFluttering={}", wasFluttering);
+                    // Check cooldown
                 boolean canUse = CooldownManager.canUseAbility(player, "flutter_jump");
                 int cooldown = CooldownManager.getCooldown(player, "flutter_jump");
                 LOGGER.debug("Flutter jump ability check: canUse={}, cooldown={}", canUse, cooldown);
                 
                 if (canUse) {
                     Vec3d velocity = player.getVelocity();
-                    if (velocity.y < 0.0) {
+                    if (velocity.y < 0.2 || wasFluttering) {
                         LOGGER.debug("Sending flutter jump packet to server");
                         jumpTime++;
                         LOGGER.debug("jumptime: {}", jumpTime);
                         // Send packet to server (server will handle velocity AND cooldown)
                         ClientNetworking.sendFlutterJumpPacket(true, jumpTime >= 15);
+                        wasFluttering = true;
                         LOGGER.debug("Flutter jump packet sent to server");
                     } else {
                         LOGGER.debug("Flutter jump not applied: player not falling (velocity.y={})", velocity.y);
                     }
                 } else {
                     LOGGER.debug("Flutter jump on cooldown, cannot use");
+                    wasFluttering = false;
                 }
+            } else {
+                // Player is on ground or not holding spacebar
+                if(wasFluttering){
+                    LOGGER.info("---Flutter jump ended (player on ground)");
+                    // Send packet to end flutter jump
+                    ClientNetworking.sendFlutterJumpPacket(true, true);
+                }
+                wasFluttering = false;
+                jumpTime = 0;
             }
         }
     }

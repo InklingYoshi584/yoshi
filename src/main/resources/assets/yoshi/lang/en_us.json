@@ -9,5 +9,8 @@
   
   "key.yoshi.reel_in": "Gulp",
   "key.yoshi.create_egg": "Lay Egg",
-  "category.yoshi.abilities": "Yoshi Abilities"
+  "category.yoshi.abilities": "Yoshi Abilities",
+  
+  "subtitles.yoshi.flutter_jump": "Yoshi flutters",
+  "subtitles.yoshi.gulp": "Yoshi gulps"
 }

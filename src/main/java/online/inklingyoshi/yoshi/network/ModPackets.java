@@ -22,22 +22,26 @@ public class ModPackets {
             System.out.println("Server: Received flutter jump packet for player " + player.getName().getString() + 
                 " - isHoldingJump=" + isHoldingJump + ", shouldResetCD=" + shouldResetCD);
             
-            server.execute(() -> {
+            server.execute(() -> {  
                 if (isHoldingJump) {
                     if (shouldResetCD) {
                         CooldownManager.startCooldown(player, "flutter_jump");
                         Vec3d currentVelocity = player.getVelocity();
-                        Vec3d newVelocity = new Vec3d(currentVelocity.x * 0.2, -0.1, currentVelocity.z  * 0.2);
-                        player.setVelocity(newVelocity);
+                        Vec3d newVelocity = new Vec3d(currentVelocity.x, 0.2, currentVelocity.z);
+                        if (currentVelocity.y > 0.4) {
+                            player.setVelocity(newVelocity);
+                        }
+                        player.setNoGravity(false);
                         return;
                     }
                     System.out.println("Server: Processing flutter jump for player " + player.getName().getString());
                     int jump_ticks = 0;
                     
-                    // Check if player has abilities enabled
-                    boolean abilitiesEnabled = AbilityManager.canPlayerUseAbilities(player);
-                    if (!abilitiesEnabled) {
-                        System.out.println("Server: Flutter jump blocked - player abilities disabled");
+                    // Check if player has flutter jump ability enabled
+                    boolean hasFlutterJump = AbilityManager.canPlayerUseAbility(player, "flutter_jump");
+                    if (!hasFlutterJump) {
+                        System.out.println("Server: Flutter jump blocked - flutter_jump ability disabled");
+                        player.setNoGravity(false);
                         return;
                     }
                     
@@ -55,38 +59,65 @@ public class ModPackets {
                     System.out.println("Server: Flutter jump conditions - onGround=" + onGround + 
                         ", touchingWater=" + touchingWater + ", velocityY=" + velocityY);
                     
-                    if (!onGround && !touchingWater && velocityY < 0.0) {
+                    if (!onGround && !touchingWater) {
                         if (canUse && !isFluttering) {
                             // Start flutter jump (first activation)
                             System.out.println("Server: Starting flutter jump for player " + player.getName().getString());
                             CooldownManager.startAbility(player, "flutter_jump", 20); // 1 second max duration
                             isFluttering = true; // Update local variable
+                            
+                            // Play flutter jump sound
+                            player.playSound(Yoshi.FLUTTER_JUMP_SOUND, 1.0f, 1.0f);
                         }
                         
-                        if (isFluttering && jump_ticks < 20 && !shouldResetCD) {
-                            // Apply continuous flutter jump velocity (reduce downward velocity)
+                        if (isFluttering && jump_ticks < 20 && !shouldResetCD && !player.isOnGround()) {
+                            // Apply continuous flutter jump velocity in the direction the player is looking
                             Vec3d currentVelocity = player.getVelocity();
-                            Vec3d newVelocity = new Vec3d(currentVelocity.x * 1.3, 0.08, currentVelocity.z  * 1.3);
-                            player.setVelocity(newVelocity);
+                            player.setNoGravity(true);
+                            
+                            // Get player's look direction
+                            Vec3d lookDirection = player.getRotationVec(1.0f).normalize();
+                            
+                            // Calculate acceleration based on player's looking direction
+                            double forwardAcceleration = 0.03; // Forward acceleration
+                            double upwardAcceleration = currentVelocity.y < -0.1 ? 0.1 : (currentVelocity.y > 0.12 ? 0.02 : 0.04); // Vertical acceleration
+                            if (currentVelocity.y < -0.2 || currentVelocity.y > 0.06) {
+                                Vec3d newVelocity = new Vec3d(currentVelocity.x, -0.1, currentVelocity.z);
+                                player.setVelocity(newVelocity);
+                                player.velocityModified = true;
+                                System.out.println("Server: Flutter jump velocity reset for player " + player.getName().getString());
+                                return;
+                            }
+                            // Calculate new velocity components
+                            double newX = lookDirection.x * forwardAcceleration;
+                            double newY = upwardAcceleration;
+                            double newZ = lookDirection.z * forwardAcceleration;
+                            
+                            if (newY + currentVelocity.y > 0.06) {
+                                newY = 0.06 - currentVelocity.y;
+                            }
+                            // Apply the acceleration
+                            Vec3d acceleration = new Vec3d(newX, newY, newZ);
+                            player.addVelocity(acceleration);
+                            
                             player.velocityModified = true;
                             jump_ticks++;
-                            
-                            // Log the velocity change
-                            System.out.println("Server: Applied flutter jump to player " + player.getName().getString() + 
-                                " - velocity changed from " + currentVelocity + " to " + newVelocity);
                         }
                     } else {
                         // Reset flutter jump if conditions are not met
                         if (isFluttering) {
                             CooldownManager.endAbility(player, "flutter_jump");
                             System.out.println("Server: Flutter jump ended due to conditions not met");
+                            
                         }
+                        player.setNoGravity(false);
                         System.out.println("Server: Flutter jump conditions not met");
                     }
                 } else {
                     // Player released spacebar - end flutter jump
                     if (CooldownManager.isAbilityActive(player, "flutter_jump")) {
                         CooldownManager.endAbility(player, "flutter_jump");
+                        player.setNoGravity(false);
                         System.out.println("Server: Flutter jump ended (spacebar released)");
                     }
                 }
@@ -97,10 +128,10 @@ public class ModPackets {
             System.out.println("Server: Received reel-in packet for player " + player.getName().getString());
             
             server.execute(() -> {
-                // Check if player has abilities enabled
-                boolean abilitiesEnabled = AbilityManager.canPlayerUseAbilities(player);
-                if (!abilitiesEnabled) {
-                    System.out.println("Server: Reel-in blocked - player abilities disabled");
+                // Check if player has reel-in ability enabled
+                boolean hasReelInAbility = AbilityManager.canPlayerUseAbility(player, "reel_in");
+                if (!hasReelInAbility) {
+                    System.out.println("Server: Reel-in blocked - reel_in ability disabled");
                     return;
                 }
                 
@@ -125,10 +156,10 @@ public class ModPackets {
             System.out.println("Server: Received create egg packet for player " + player.getName().getString());
             
             server.execute(() -> {
-                // Check if player has abilities enabled
-                boolean abilitiesEnabled = AbilityManager.canPlayerUseAbilities(player);
-                if (!abilitiesEnabled) {
-                    System.out.println("Server: Create egg blocked - player abilities disabled");
+                // Check if player has create egg ability enabled
+                boolean hasCreateEggAbility = AbilityManager.canPlayerUseAbility(player, "create_egg");
+                if (!hasCreateEggAbility) {
+                    System.out.println("Server: Create egg blocked - create_egg ability disabled");
                     return;
                 }
                 
@@ -175,4 +206,3 @@ public class ModPackets {
         });
     }
 };
- 

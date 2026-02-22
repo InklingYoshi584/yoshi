@@ -1,0 +1,20 @@
+{
+  "flutter_jump": {
+    "sounds": [
+      {
+        "name": "yoshi:flutter_jump",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.yoshi.flutter_jump"
+  },
+  "gulp": {
+    "sounds": [
+      {
+        "name": "yoshi:gulp",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.yoshi.gulp"
+  }
+}

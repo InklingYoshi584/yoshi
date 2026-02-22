@@ -151,6 +151,10 @@ public class ServerTickHandler {
         target.setVelocity(throwVelocity);
         target.velocityModified = true;
         player.setInvulnerable(false);
+        
+        // Play gulp sound
+        player.playSound(Yoshi.GULP_SOUND, 1.0f, 1.0f);
+        
         // Apply armor-piercing damage
         float damageAmount = 7.0f;
         target.damage(Yoshi.of(target.getWorld(), Yoshi.GULP_DAMAGE, player), damageAmount);
