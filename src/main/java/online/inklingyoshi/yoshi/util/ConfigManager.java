@@ -38,7 +38,7 @@ public class ConfigManager {
     public static void loadConfig() {
         try {
             if (!CONFIG_FILE.exists()) {
-                LOGGER.info("Config file does not exist, creating default");
+                // LOGGER.info("Config file does not exist, creating default");
                 saveConfig();
                 return;
             }
@@ -48,7 +48,7 @@ public class ConfigManager {
                 Map<UUID, Map<String, Boolean>> loaded = GSON.fromJson(reader, type);
                 if (loaded != null) {
                     playerAbilities = loaded;
-                    LOGGER.info("Loaded {} player ability states from config", playerAbilities.size());
+                    // LOGGER.info("Loaded {} player ability states from config", playerAbilities.size());
                 } else {
                     playerAbilities = new HashMap<>();
                     LOGGER.warn("Config file was empty or invalid, using default");
@@ -66,7 +66,7 @@ public class ConfigManager {
             
             try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
                 GSON.toJson(playerAbilities, writer);
-                LOGGER.info("Saved {} player ability states to config", playerAbilities.size());
+                // LOGGER.info("Saved {} player ability states to config", playerAbilities.size());
             }
         } catch (Exception e) {
             LOGGER.error("Failed to save config file: {}", e.getMessage());
@@ -95,7 +95,7 @@ public class ConfigManager {
             abilities.put(ability, enabled);
         }
         saveConfig();
-        LOGGER.info("Set all abilities for {} to {}", player.getName().getString(), enabled);
+        // LOGGER.info("Set all abilities for {} to {}", player.getName().getString(), enabled);
     }
     
     public static void setAbilities(net.minecraft.entity.player.PlayerEntity player, boolean enabled) {
@@ -104,7 +104,7 @@ public class ConfigManager {
             abilities.put(ability, enabled);
         }
         saveConfig();
-        LOGGER.info("Set all abilities for {} to {}", player.getName().getString(), enabled);
+        // LOGGER.info("Set all abilities for {} to {}", player.getName().getString(), enabled);
     }
     
     public static void setAbilities(UUID playerUuid, boolean enabled) {
@@ -113,7 +113,7 @@ public class ConfigManager {
             abilities.put(ability, enabled);
         }
         saveConfig();
-        LOGGER.info("Set all abilities for UUID {} to {}", playerUuid, enabled);
+        // LOGGER.info("Set all abilities for UUID {} to {}", playerUuid, enabled);
     }
     
     public static boolean hasSpecificAbility(ServerPlayerEntity player, String abilityName) {
@@ -130,39 +130,39 @@ public class ConfigManager {
         Map<String, Boolean> abilities = getPlayerAbilitiesMap(player.getUuid());
         abilities.put(abilityName, enabled);
         saveConfig();
-        LOGGER.info("Set ability '{}' for {} to {}", abilityName, player.getName().getString(), enabled);
+        // LOGGER.info("Set ability '{}' for {} to {}", abilityName, player.getName().getString(), enabled);
     }
     
     public static void setSpecificAbility(net.minecraft.entity.player.PlayerEntity player, String abilityName, boolean enabled) {
         Map<String, Boolean> abilities = getPlayerAbilitiesMap(player.getUuid());
         abilities.put(abilityName, enabled);
         saveConfig();
-        LOGGER.info("Set ability '{}' for {} to {}", abilityName, player.getName().getString(), enabled);
+        // LOGGER.info("Set ability '{}' for {} to {}", abilityName, player.getName().getString(), enabled);
     }
     
     public static void setSpecificAbility(UUID playerUuid, String abilityName, boolean enabled) {
         Map<String, Boolean> abilities = getPlayerAbilitiesMap(playerUuid);
         abilities.put(abilityName, enabled);
         saveConfig();
-        LOGGER.info("Set ability '{}' for UUID {} to {}", abilityName, playerUuid, enabled);
+        // LOGGER.info("Set ability '{}' for UUID {} to {}", abilityName, playerUuid, enabled);
     }
     
     public static void removePlayer(ServerPlayerEntity player) {
         playerAbilities.remove(player.getUuid());
         saveConfig();
-        LOGGER.info("Removed ability state for {}", player.getName().getString());
+        // LOGGER.info("Removed ability state for {}", player.getName().getString());
     }
     
     public static void removePlayer(net.minecraft.entity.player.PlayerEntity player) {
         playerAbilities.remove(player.getUuid());
         saveConfig();
-        LOGGER.info("Removed ability state for {}", player.getName().getString());
+        // LOGGER.info("Removed ability state for {}", player.getName().getString());
     }
     
     public static void removePlayer(UUID playerUuid) {
         playerAbilities.remove(playerUuid);
         saveConfig();
-        LOGGER.info("Removed ability state for UUID {}", playerUuid);
+        // LOGGER.info("Removed ability state for UUID {}", playerUuid);
     }
     
     public static Map<UUID, Map<String, Boolean>> getAllPlayerAbilities() {
@@ -172,7 +172,7 @@ public class ConfigManager {
     public static void setAllPlayerAbilities(Map<UUID, Map<String, Boolean>> abilities) {
         playerAbilities = new HashMap<>(abilities);
         saveConfig();
-        LOGGER.info("Set all player abilities ({} entries)", playerAbilities.size());
+        // LOGGER.info("Set all player abilities ({} entries)", playerAbilities.size());
     }
     
     public static Map<String, Boolean> getPlayerAbilityMap(UUID playerUuid) {

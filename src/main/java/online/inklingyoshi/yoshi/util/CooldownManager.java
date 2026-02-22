@@ -91,6 +91,15 @@ public class CooldownManager {
         return playerAbilities.containsKey(ability) && playerAbilities.get(ability) > 0;
     }
     
+    public static int getAbilityRemainingDuration(PlayerEntity player, String ability) {
+        if (!activeAbilities.containsKey(player)) {
+            return 0;
+        }
+        
+        Map<String, Integer> playerAbilities = activeAbilities.get(player);
+        return playerAbilities.getOrDefault(ability, 0);
+    }
+    
     public static void tickAbilities() {
         // Create a copy of the entries to avoid ConcurrentModificationException
         Map<PlayerEntity, Map<String, Integer>> copy = new HashMap<>(activeAbilities);

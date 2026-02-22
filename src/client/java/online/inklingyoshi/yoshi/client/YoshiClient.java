@@ -22,15 +22,15 @@ public class YoshiClient implements ClientModInitializer {
     private static boolean wasFluttering = false;
     @Override
     public void onInitializeClient() {
-        LOGGER.debug("Initializing Yoshi client mod");
+        // LOGGER.info("Initializing Yoshi client mod");
         
         // Register entity renderers
         EntityRendererRegistry.register(YoshiEntityType.YOSHI_EGG, YoshiEggEntityRenderer::new);
-        LOGGER.debug("Entity renderers registered");
+        // LOGGER.info("Entity renderers registered");
         
         // Register keybindings
         KeyBindings.registerKeyBindings();
-        LOGGER.debug("Keybindings registered");
+        // LOGGER.info("Keybindings registered");
         
         // Register tick handler
         ClientTickEvents.END_CLIENT_TICK.register(client -> {            
@@ -38,49 +38,49 @@ public class YoshiClient implements ClientModInitializer {
             CooldownManager.tick();
             
             if (KeyBindings.REEL_IN.wasPressed()) {
-                LOGGER.debug("Reel-in key pressed");
+                // LOGGER.info("Reel-in key pressed");
                 // Start reel-in ability
                 if (client.player != null) {
                     boolean canUse = CooldownManager.canUseAbility(client.player, "reel_in");
                     int cooldown = CooldownManager.getCooldown(client.player, "reel_in");
-                    LOGGER.debug("Reel-in ability check: canUse={}, cooldown={}", canUse, cooldown);
+                    // LOGGER.info("Reel-in ability check: canUse={}, cooldown={}", canUse, cooldown);
                     if (canUse) {
-                        LOGGER.debug("Starting reel-in ability");
+                        // LOGGER.info("Starting reel-in ability");
                         reelInAbility.startReelIn(client.player);
                         // Send packet to server (server will handle cooldown)
                         ClientNetworking.sendReelInPacket();
-                        LOGGER.debug("Reel-in ability packet sent to server");
+                        // LOGGER.info("Reel-in ability packet sent to server");
                     } else {
-                        LOGGER.debug("Reel-in ability on cooldown, cannot use");
+                        // LOGGER.info("Reel-in ability on cooldown, cannot use");
                     }
                 } else {
-                    LOGGER.debug("Client player is null, cannot use reel-in ability");
+                    // LOGGER.info("Client player is null, cannot use reel-in ability");
                 }
             }
             
             if (KeyBindings.CREATE_EGG.wasPressed()) {
-                LOGGER.debug("Create egg key pressed");
+                // LOGGER.info("Create egg key pressed");
                 // Handle create egg ability
                 if (client.player != null) {
                     boolean canUse = CooldownManager.canUseAbility(client.player, "create_egg");
                     int cooldown = CooldownManager.getCooldown(client.player, "create_egg");
-                    LOGGER.debug("Create egg ability check: canUse={}, cooldown={}", canUse, cooldown);
+                    // LOGGER.info("Create egg ability check: canUse={}, cooldown={}", canUse, cooldown);
                     if (canUse) {
-                        LOGGER.debug("Sending create egg packet to server");
+                        // LOGGER.info("Sending create egg packet to server");
                         // Send packet to server (server will handle hunger/saturation and cooldown)
                         ClientNetworking.sendCreateEggPacket();
-                        LOGGER.debug("Create egg packet sent to server");
+                        // LOGGER.info("Create egg packet sent to server");
                     } else {
-                        LOGGER.debug("Create egg ability on cooldown, cannot use");
+                        // LOGGER.info("Create egg ability on cooldown, cannot use");
                     }
                 } else {
-                    LOGGER.debug("Client player is null, cannot use create egg ability");
+                    // LOGGER.info("Client player is null, cannot use create egg ability");
                 }
             }
             
             // Update reel-in ability only if there's an active target
             if (client.player != null && reelInAbility.isReeling()) {
-                LOGGER.debug("Updating reel-in ability for active target");
+                // LOGGER.info("Updating reel-in ability for active target");
                 reelInAbility.updateReelIn(client.player);
             }
             KeyBinding jumpKey = client.options.jumpKey;
@@ -91,7 +91,7 @@ public class YoshiClient implements ClientModInitializer {
             handleFlutterJump(client);
         });
         
-        LOGGER.debug("Tick handler registered successfully");
+        // LOGGER.info("Tick handler registered successfully");
     }
     
     private void handleFlutterJump(MinecraftClient client) {
@@ -101,7 +101,7 @@ public class YoshiClient implements ClientModInitializer {
             
             // Check if player was fluttering but released spacebar
             if (wasFluttering && !jumpKey.isPressed()) {
-                LOGGER.info("---Flutter jump ended prematurely (spacebar released)");
+                // LOGGER.info("---Flutter jump ended prematurely (spacebar released)");
                 // Send packet to end flutter jump
                 ClientNetworking.sendFlutterJumpPacket(true, true);
                 wasFluttering = false;
@@ -110,35 +110,35 @@ public class YoshiClient implements ClientModInitializer {
             
             // Check if player is in midair and holding spacebar
             if (!player.isOnGround() && !player.isTouchingWater() && jumpKey.isPressed() && !player.isFallFlying() && !player.isCreative()) {
-                LOGGER.debug("Flutter jump conditions met: onGround={}, touchingWater={}, jumpPressed={}, velocityY={}", 
-                    player.isOnGround(), player.isTouchingWater(), jumpKey.isPressed(), player.getVelocity().y);
-                LOGGER.info("wasFluttering={}", wasFluttering);
+                // LOGGER.info("Flutter jump conditions met: onGround={}, touchingWater={}, jumpPressed={}, velocityY={}", 
+                    // player.isOnGround(), player.isTouchingWater(), jumpKey.isPressed(), player.getVelocity().y);
+                // LOGGER.info("wasFluttering={}", wasFluttering);
                     // Check cooldown
                 boolean canUse = CooldownManager.canUseAbility(player, "flutter_jump");
                 int cooldown = CooldownManager.getCooldown(player, "flutter_jump");
-                LOGGER.debug("Flutter jump ability check: canUse={}, cooldown={}", canUse, cooldown);
+                // LOGGER.info("Flutter jump ability check: canUse={}, cooldown={}", canUse, cooldown);
                 
                 if (canUse) {
                     Vec3d velocity = player.getVelocity();
                     if (velocity.y < 0.2 || wasFluttering) {
-                        LOGGER.debug("Sending flutter jump packet to server");
+                        // LOGGER.info("Sending flutter jump packet to server");
                         jumpTime++;
-                        LOGGER.debug("jumptime: {}", jumpTime);
+                        // LOGGER.info("jumptime: {}", jumpTime);
                         // Send packet to server (server will handle velocity AND cooldown)
                         ClientNetworking.sendFlutterJumpPacket(true, jumpTime >= 15);
                         wasFluttering = true;
-                        LOGGER.debug("Flutter jump packet sent to server");
+                        // LOGGER.info("Flutter jump packet sent to server");
                     } else {
-                        LOGGER.debug("Flutter jump not applied: player not falling (velocity.y={})", velocity.y);
+                        // LOGGER.info("Flutter jump not applied: player not falling (velocity.y={})", velocity.y);
                     }
                 } else {
-                    LOGGER.debug("Flutter jump on cooldown, cannot use");
+                    // LOGGER.info("Flutter jump on cooldown, cannot use");
                     wasFluttering = false;
                 }
             } else {
                 // Player is on ground or not holding spacebar
                 if(wasFluttering){
-                    LOGGER.info("---Flutter jump ended (player on ground)");
+                    // LOGGER.info("---Flutter jump ended (player on ground)");
                     // Send packet to end flutter jump
                     ClientNetworking.sendFlutterJumpPacket(true, true);
                 }

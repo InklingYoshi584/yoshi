@@ -47,6 +47,6 @@ public class EntityDeathEventHandler {
         entity.dropStack(yoshiEgg);
         
         // Log the drop
-        System.out.println("YoshiEgg dropped for entity " + entity.getType().toString());
+        // System.out.println("YoshiEgg dropped for entity " + entity.getType().toString());
     }
 }

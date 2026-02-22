@@ -55,6 +55,6 @@ public class Yoshi implements ModInitializer {
             YoshiCommand.register(dispatcher, registryAccess, environment);
         });
         
-        LOGGER.info("Yoshi mod initialized successfully!");
+        // LOGGER.info("Yoshi mod initialized successfully!");
     }
 }
