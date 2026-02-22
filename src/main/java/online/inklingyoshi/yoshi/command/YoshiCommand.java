@@ -166,7 +166,7 @@ public class YoshiCommand {
     private static int executeSetSpecificAbility(CommandContext<ServerCommandSource> context, ServerPlayerEntity targetPlayer, String abilityName, boolean enabled) {
         // Check if user tried to use "all" option
         if ("all".equalsIgnoreCase(abilityName)) {
-            context.getSource().sendError(Text.literal("To enable/disable all abilities for a player, use: /yoshi player " + targetPlayer.getName().getString() + " " + enabled));
+            context.getSource().sendError(Text.literal("To enable/disable all abilities for a player, use: /yoshi player " + targetPlayer.getName().getString() + " true/false"));
             return 0;
         }
         
