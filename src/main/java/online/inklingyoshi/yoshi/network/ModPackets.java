@@ -13,6 +13,7 @@ public class ModPackets {
     public static final Identifier FLUTTER_JUMP_PACKET = new Identifier(Yoshi.MOD_ID, "flutter_jump");
     public static final Identifier REEL_IN_PACKET = new Identifier(Yoshi.MOD_ID, "reel_in");
     public static final Identifier CREATE_EGG_PACKET = new Identifier(Yoshi.MOD_ID, "create_egg");
+    public static final Identifier GROUND_POUND_PACKET = new Identifier(Yoshi.MOD_ID, "ground_pound");
     
     public static void registerPackets() {
         ServerPlayNetworking.registerGlobalReceiver(FLUTTER_JUMP_PACKET, (server, player, handler, buf, responseSender) -> {
@@ -210,6 +211,37 @@ public class ModPackets {
                     }
                 } else {
                     // System.out.println("Server: Create egg ability on cooldown");
+                }
+            });
+        });
+        
+        ServerPlayNetworking.registerGlobalReceiver(GROUND_POUND_PACKET, (server, player, handler, buf, responseSender) -> {
+            // System.out.println("Server: Received ground pound packet for player " + player.getName().getString());
+            
+            server.execute(() -> {
+                // Check if player has ground pound ability enabled
+                boolean hasGroundPoundAbility = AbilityManager.canPlayerUseAbility(player, "ground_pound");
+                if (!hasGroundPoundAbility) {
+                    // System.out.println("Server: Ground pound blocked - ground_pound ability disabled");
+                    return;
+                }
+                
+                // Check cooldown
+                boolean canUse = CooldownManager.canUseAbility(player, "ground_pound");
+                // System.out.println("Server: Ground pound cooldown check - canUse=" + canUse);
+                
+                if (canUse) {
+                    // Handle ground pound ability on server
+                    // System.out.println("Server: Starting ground pound ability for player " + player.getName().getString());
+                    
+                    // Activate ground pound ability
+                    online.inklingyoshi.yoshi.ability.GroundPoundAbility.activate(player);
+                    
+                    // Start cooldown
+                    CooldownManager.startCooldown(player, "ground_pound");
+                    // System.out.println("Server: Ground pound ability activated and cooldown started");
+                } else {
+                    // System.out.println("Server: Ground pound ability on cooldown");
                 }
             });
         });

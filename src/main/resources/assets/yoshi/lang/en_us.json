@@ -12,5 +12,11 @@
   "category.yoshi.abilities": "Yoshi Abilities",
   
   "subtitles.yoshi.flutter_jump": "Yoshi flutters",
-  "subtitles.yoshi.gulp": "Yoshi gulps"
+  "subtitles.yoshi.gulp": "Yoshi gulps",
+  
+  "key.yoshi.ground_pound": "Ground Pound",
+  "ability.yoshi.ground_pound": "Ground Pound",
+  
+  "death.attack.ground_pound": "%1$s was ground-pounded",
+  "death.attack.ground_pound.player": "%1$s was ground-pounded by %2$s"
 }

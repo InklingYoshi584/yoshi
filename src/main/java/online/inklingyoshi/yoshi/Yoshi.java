@@ -24,6 +24,7 @@ public class Yoshi implements ModInitializer {
     public static final String MOD_ID = "yoshi";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final RegistryKey<DamageType> GULP_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "gulp"));
+    public static final RegistryKey<DamageType> GROUND_POUND_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "ground_pound"));
     
     // Sound Events
     public static final SoundEvent FLUTTER_JUMP_SOUND = SoundEvent.of(new Identifier(MOD_ID, "flutter_jump"));

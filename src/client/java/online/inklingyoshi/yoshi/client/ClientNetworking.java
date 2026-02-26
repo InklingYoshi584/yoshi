@@ -24,4 +24,10 @@ public class ClientNetworking {
         // No additional data needed
         ClientPlayNetworking.send(ModPackets.CREATE_EGG_PACKET, buf);
     }
+    
+    public static void sendGroundPoundPacket() {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        // No additional data needed
+        ClientPlayNetworking.send(ModPackets.GROUND_POUND_PACKET, buf);
+    }
 }

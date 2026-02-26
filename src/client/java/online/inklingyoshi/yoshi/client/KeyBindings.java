@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 public class KeyBindings {
     public static KeyBinding REEL_IN;
     public static KeyBinding CREATE_EGG;
+    public static KeyBinding GROUND_POUND;
     
     public static void registerKeyBindings() {
         REEL_IN = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -21,6 +22,13 @@ public class KeyBindings {
                 "key.yoshi.create_egg",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_G,
+                "category.yoshi.abilities"
+        ));
+        
+        GROUND_POUND = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.yoshi.ground_pound",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_C,
                 "category.yoshi.abilities"
         ));
     }

@@ -74,15 +74,35 @@ public class YoshiClient implements ClientModInitializer {
                         // LOGGER.info("Create egg ability on cooldown, cannot use");
                     }
                 } else {
-                    // LOGGER.info("Client player is null, cannot use create egg ability");
+                // LOGGER.info("Client player is null, cannot use create egg ability");
+            }
+        }
+        
+        if (KeyBindings.GROUND_POUND.wasPressed()) {
+            // LOGGER.info("Ground pound key pressed");
+            // Handle ground pound ability
+            if (client.player != null) {
+                boolean canUse = CooldownManager.canUseAbility(client.player, "ground_pound");
+                int cooldown = CooldownManager.getCooldown(client.player, "ground_pound");
+                // LOGGER.info("Ground pound ability check: canUse={}, cooldown={}", canUse, cooldown);
+                if (canUse) {
+                    // LOGGER.info("Sending ground pound packet to server");
+                    // Send packet to server (server will handle cooldown and ability logic)
+                    ClientNetworking.sendGroundPoundPacket();
+                    // LOGGER.info("Ground pound packet sent to server");
+                } else {
+                    // LOGGER.info("Ground pound ability on cooldown, cannot use");
                 }
+            } else {
+                // LOGGER.info("Client player is null, cannot use ground pound ability");
             }
-            
-            // Update reel-in ability only if there's an active target
-            if (client.player != null && reelInAbility.isReeling()) {
-                // LOGGER.info("Updating reel-in ability for active target");
-                reelInAbility.updateReelIn(client.player);
-            }
+        }
+        
+        // Update reel-in ability only if there's an active target
+        if (client.player != null && reelInAbility.isReeling()) {
+            // LOGGER.info("Updating reel-in ability for active target");
+            reelInAbility.updateReelIn(client.player);
+        }
             KeyBinding jumpKey = client.options.jumpKey;
             if (!jumpKey.isPressed()) {
                 jumpTime = 0;

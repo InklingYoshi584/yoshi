@@ -29,6 +29,7 @@ public class YoshiCommand {
                 "gulp_ability", 
                 "create_egg",
                 "reel_in",
+                "ground_pound",
                 "speed",
                 "jump_height",
                 "all"

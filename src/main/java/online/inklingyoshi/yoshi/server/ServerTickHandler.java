@@ -6,6 +6,7 @@ import online.inklingyoshi.yoshi.util.CooldownManager;
 import online.inklingyoshi.yoshi.util.EntityDetection;
 import online.inklingyoshi.yoshi.util.DamageSourceUtil;
 import online.inklingyoshi.yoshi.item.YoshiItems;
+import online.inklingyoshi.yoshi.ability.GroundPoundAbility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,11 +48,21 @@ public class ServerTickHandler {
                 if (reelInAbilities.containsKey(player)) {
                     ReelInData data = reelInAbilities.get(player);
                     updateReelIn(player, data);
-                    
-                    if (data.targetEntities.isEmpty()) {
-                        reelInAbilities.remove(player);
-                    }
                 }
+                
+                // Update ground pound abilities
+                online.inklingyoshi.yoshi.ability.GroundPoundAbility.onPlayerTick(player);
+                online.inklingyoshi.yoshi.ability.GroundPoundAbility.handleEndLag(player);
+            });
+            
+            // Update reel-in abilities (cleanup)
+            reelInAbilities.entrySet().removeIf(entry -> {
+                PlayerEntity player = entry.getKey();
+                ReelInData data = entry.getValue();
+                if (data.targetEntities.isEmpty()) {
+                    return true;
+                }
+                return false;
             });
         });
     }
