@@ -18,5 +18,23 @@
   "ability.yoshi.ground_pound": "Ground Pound",
   
   "death.attack.ground_pound": "%1$s was ground-pounded",
-  "death.attack.ground_pound.player": "%1$s was ground-pounded by %2$s"
+  "death.attack.ground_pound.player": "%1$s was ground-pounded by %2$s",
+  
+  "item.yoshi.music_disc_opening_melody": "Music Disc",
+  "item.yoshi.music_disc_title_theme": "Music Disc",
+  "item.yoshi.music_disc_flower_garden": "Music Disc",
+  "item.yoshi.music_disc_athletic_theme": "Music Disc",
+  "item.yoshi.music_disc_fluffy_snow": "Music Disc",
+  
+  "item.yoshi.music_disc_opening_melody.desc": "Opening Melody(Yoshi's Island) - Mario Kart World",
+  "item.yoshi.music_disc_title_theme.desc": "Title Theme - Yoshi's Crafted World",
+  "item.yoshi.music_disc_flower_garden.desc": "Flower Garden - Yoshi's Island",
+  "item.yoshi.music_disc_athletic_theme.desc": "Athletic Theme(Yoshi's Island) - Qumu",
+  "item.yoshi.music_disc_fluffy_snow.desc": "Fluffy Snow, Here We Go! - Yoshi's Woolly World",
+  
+  "subtitles.yoshi.music_disc_opening_melody": "Yoshi's Island: Opening Melody - Mario Kart World",
+  "subtitles.yoshi.music_disc_title_theme": "Yoshi's Crafted World: Title Theme",
+  "subtitles.yoshi.music_disc_flower_garden": "Yoshi's Island: Flower Garden",
+  "subtitles.yoshi.music_disc_athletic_theme": "Yoshi's Island: Athletic Theme - Qumu",
+  "subtitles.yoshi.music_disc_fluffy_snow": "Yoshi's Woolly World: Fluffy Snow, Here We Go!"
 }

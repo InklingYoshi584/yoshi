@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "yoshi:yoshi_egg"
+    },
+    {
+      "item": "yoshi:yoshi_egg"
+    },
+    {
+      "item": "yoshi:yoshi_egg"
+    },
+    {
+      "item": "yoshi:yoshi_egg"
+    },
+    {
+      "item": "yoshi:yoshi_egg"
+    }
+  ],
+  "result": {
+    "item": "yoshi:music_disc_athletic_theme",
+    "count": 1
+  }
+}
