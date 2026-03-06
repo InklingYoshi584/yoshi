@@ -118,12 +118,12 @@ public class ConfigManager {
     
     public static boolean hasSpecificAbility(ServerPlayerEntity player, String abilityName) {
         Map<String, Boolean> abilities = getPlayerAbilitiesMap(player.getUuid());
-        return abilities.getOrDefault(abilityName, DEFAULT_ABILITIES.getOrDefault(abilityName, true));
+        return abilities.getOrDefault(abilityName, DEFAULT_ABILITIES.getOrDefault(abilityName, false));
     }
     
     public static boolean hasSpecificAbility(net.minecraft.entity.player.PlayerEntity player, String abilityName) {
         Map<String, Boolean> abilities = getPlayerAbilitiesMap(player.getUuid());
-        return abilities.getOrDefault(abilityName, DEFAULT_ABILITIES.getOrDefault(abilityName, true));
+        return abilities.getOrDefault(abilityName, DEFAULT_ABILITIES.getOrDefault(abilityName, false));
     }
     
     public static void setSpecificAbility(ServerPlayerEntity player, String abilityName, boolean enabled) {
