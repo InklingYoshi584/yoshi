@@ -140,7 +140,8 @@ public class YoshiClient implements ClientModInitializer {
                 
                 if (canUse) {
                     Vec3d velocity = player.getVelocity();
-                    if (velocity.y < 0.2 || wasFluttering) {
+                    // Only trigger when falling (velocity.y <= 0) to prevent triggering on jump ascent
+                    if (velocity.y <= 0 || wasFluttering) {
                         // LOGGER.info("Sending flutter jump packet to server");
                         jumpTime++;
                         // LOGGER.info("jumptime: {}", jumpTime);
