@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.Registries;
@@ -19,6 +20,7 @@ import online.inklingyoshi.yoshi.entity.YoshiEntityType;
 import online.inklingyoshi.yoshi.item.YoshiItems;
 import online.inklingyoshi.yoshi.network.ModPackets;
 import online.inklingyoshi.yoshi.server.ServerTickHandler;
+import online.inklingyoshi.yoshi.util.CooldownManager;
 
 public class Yoshi implements ModInitializer {
     public static final String MOD_ID = "yoshi";
@@ -54,6 +56,11 @@ public class Yoshi implements ModInitializer {
         // Register commands
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             YoshiCommand.register(dispatcher, registryAccess, environment);
+        });
+        
+        // Clean up player data on disconnect to prevent memory leaks
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+            CooldownManager.removePlayer(handler.getPlayer());
         });
         
         // LOGGER.info("Yoshi mod initialized successfully!");
