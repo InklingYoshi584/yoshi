@@ -34,8 +34,7 @@ public class YoshiClient implements ClientModInitializer {
         
         // Register tick handler
         ClientTickEvents.END_CLIENT_TICK.register(client -> {            
-            // Tick cooldowns on client
-            CooldownManager.tick();
+            // NOTE: Cooldowns are handled server-side, no need to tick on client
             
             if (KeyBindings.REEL_IN.wasPressed()) {
                 // LOGGER.info("Reel-in key pressed");

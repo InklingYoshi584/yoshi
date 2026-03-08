@@ -68,13 +68,18 @@ public class YoshiCommand {
             .then(CommandManager.literal("reload")
                 .executes(context -> executeReloadConfig(context)))
             
+            // /yoshi reset - Delete config and start fresh (all abilities disabled)
+            .then(CommandManager.literal("reset")
+                .executes(context -> executeResetConfig(context)))
+            
             .executes(context -> {
                 context.getSource().sendFeedback(() -> Text.literal(
                     "Yoshi Ability Management Commands:\n" +
                     "/yoshi player <player> <true|false> - Set abilities for specific player\n" +
                     "/yoshi abilities <player> <ability> <true|false> - Set specific ability for player\n" +
                     "/yoshi list - List all players with abilities enabled\n" +
-                    "/yoshi reload - Reload config from file"
+                    "/yoshi reload - Reload config from file\n" +
+                    "/yoshi reset - Reset config (all abilities disabled)"
                 ), false);
                 return 1;
             })
@@ -191,6 +196,20 @@ public class YoshiCommand {
     private static int executeReloadConfig(CommandContext<ServerCommandSource> context) {
         online.inklingyoshi.yoshi.util.ConfigManager.loadConfig();
         context.getSource().sendFeedback(() -> Text.literal("Yoshi config reloaded from file"), true);
+        return 1;
+    }
+    
+    private static int executeResetConfig(CommandContext<ServerCommandSource> context) {
+        // Delete config file and create fresh one with all abilities disabled
+        java.io.File configFile = new java.io.File("config/yoshi_abilities.json");
+        if (configFile.exists()) {
+            configFile.delete();
+        }
+        
+        // Reload config (creates fresh file with defaults)
+        online.inklingyoshi.yoshi.util.ConfigManager.loadConfig();
+        
+        context.getSource().sendFeedback(() -> Text.literal("Yoshi config reset! All abilities are now disabled by default."), true);
         return 1;
     }
 }

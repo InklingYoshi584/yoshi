@@ -9,6 +9,16 @@ public class CooldownManager {
     private static final Map<PlayerEntity, Map<String, Integer>> activeAbilities = new HashMap<>();
     private static final int FLUTTER_JUMP_COOLDOWN = 4; // 4 ticks
     private static final int REEL_IN_COOLDOWN = 40; // 2 seconds
+    private static final int CREATE_EGG_COOLDOWN = 40; // 2 seconds
+    private static final int GROUND_POUND_COOLDOWN = 40; // 2 seconds
+    
+    /**
+     * Remove player from all tracking maps (call on player disconnect)
+     */
+    public static void removePlayer(PlayerEntity player) {
+        cooldowns.remove(player);
+        activeAbilities.remove(player);
+    }
     
     public static void tick() {
         // Decrement cooldowns for all players
@@ -47,6 +57,12 @@ public class CooldownManager {
                 break;
             case "reel_in":
                 cooldownTime = REEL_IN_COOLDOWN;
+                break;
+            case "create_egg":
+                cooldownTime = CREATE_EGG_COOLDOWN;
+                break;
+            case "ground_pound":
+                cooldownTime = GROUND_POUND_COOLDOWN;
                 break;
         }
         
