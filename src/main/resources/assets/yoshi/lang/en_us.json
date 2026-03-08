@@ -36,5 +36,8 @@
   "subtitles.yoshi.music_disc_title_theme": "Yoshi's Crafted World: Title Theme",
   "subtitles.yoshi.music_disc_flower_garden": "Yoshi's Island: Flower Garden",
   "subtitles.yoshi.music_disc_athletic_theme": "Yoshi's Island: Athletic Theme - Qumu",
-  "subtitles.yoshi.music_disc_fluffy_snow": "Yoshi's Woolly World: Fluffy Snow, Here We Go!"
+  "subtitles.yoshi.music_disc_fluffy_snow": "Yoshi's Woolly World: Fluffy Snow, Here We Go!",
+  
+  "block.yoshi.golden_egg": "Golden Egg",
+  "item.yoshi.golden_egg": "Golden Egg"
 }

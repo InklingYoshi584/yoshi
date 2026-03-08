@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import online.inklingyoshi.yoshi.Yoshi;
+import online.inklingyoshi.yoshi.block.YoshiBlocks;
 
 public class YoshiItems {
     public static Item YOSHI_EGG;
@@ -18,6 +19,9 @@ public class YoshiItems {
     public static Item MUSIC_DISC_FLOWER_GARDEN;
     public static Item MUSIC_DISC_ATHLETIC_THEME;
     public static Item MUSIC_DISC_FLUFFY_SNOW;
+    
+    // Golden Egg Item
+    public static Item GOLDEN_EGG;
     
     public static void registerItems() {
         YOSHI_EGG = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "yoshi_egg"), 
@@ -38,5 +42,10 @@ public class YoshiItems {
         
         MUSIC_DISC_FLUFFY_SNOW = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "music_disc_fluffy_snow"), 
             new MusicDiscItem(5, Yoshi.MUSIC_DISC_FLUFFY_SNOW, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 160));
+        
+        // Register Golden Egg Item
+        GOLDEN_EGG = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "golden_egg"), 
+            new GoldenEggItem((online.inklingyoshi.yoshi.block.GoldenEggBlock) YoshiBlocks.GOLDEN_EGG, 
+                new FabricItemSettings().maxCount(1)));
     }
 }

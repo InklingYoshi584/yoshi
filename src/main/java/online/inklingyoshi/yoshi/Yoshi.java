@@ -48,11 +48,18 @@ public class Yoshi implements ModInitializer {
         ModPackets.registerPackets();
         ServerTickHandler.register();
         
+        // Register blocks
+        online.inklingyoshi.yoshi.block.YoshiBlocks.registerBlocks();
+        
         // Register items
         YoshiItems.registerItems();
         
         // Register entity types
         YoshiEntityType.registerEntityTypes();
+        
+        // Register event handlers
+        online.inklingyoshi.yoshi.event.GoldenAppleEventHandler.register();
+        online.inklingyoshi.yoshi.event.PlayerDeathEventHandler.register();
         
         // Register sound events
         Registry.register(Registries.SOUND_EVENT, new Identifier(MOD_ID, "flutter_jump"), FLUTTER_JUMP_SOUND);
