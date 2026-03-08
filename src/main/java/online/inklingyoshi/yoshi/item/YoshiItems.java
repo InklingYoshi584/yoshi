@@ -23,6 +23,9 @@ public class YoshiItems {
     // Golden Egg Item
     public static Item GOLDEN_EGG;
     
+    // Reinforced Obsidian Item
+    public static Item REINFORCED_OBSIDIAN;
+    
     public static void registerItems() {
         YOSHI_EGG = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "yoshi_egg"), 
             new YoshiEggItem(new FabricItemSettings().maxCount(16)));
@@ -47,5 +50,9 @@ public class YoshiItems {
         GOLDEN_EGG = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "golden_egg"), 
             new GoldenEggItem((online.inklingyoshi.yoshi.block.GoldenEggBlock) YoshiBlocks.GOLDEN_EGG, 
                 new FabricItemSettings().maxCount(1)));
+        
+        // Register Reinforced Obsidian Item
+        REINFORCED_OBSIDIAN = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "reinforced_obsidian"), 
+            new net.minecraft.item.BlockItem(YoshiBlocks.REINFORCED_OBSIDIAN, new FabricItemSettings()));
     }
 }
