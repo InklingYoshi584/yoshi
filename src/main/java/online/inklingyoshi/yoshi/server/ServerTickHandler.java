@@ -53,6 +53,9 @@ public class ServerTickHandler {
                 // Update ground pound abilities
                 online.inklingyoshi.yoshi.ability.GroundPoundAbility.onPlayerTick(player);
                 online.inklingyoshi.yoshi.ability.GroundPoundAbility.handleEndLag(player);
+                
+                // Update golden egg manager
+                online.inklingyoshi.yoshi.util.GoldenEggManager.onPlayerTick(player);
             });
             
             // Update reel-in abilities (cleanup)

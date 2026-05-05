@@ -4,7 +4,8 @@
   "package": "online.inklingyoshi.yoshi.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "ItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

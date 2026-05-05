@@ -31,6 +31,13 @@ public class Yoshi implements ModInitializer {
     // Sound Events
     public static final SoundEvent FLUTTER_JUMP_SOUND = SoundEvent.of(new Identifier(MOD_ID, "flutter_jump"));
     public static final SoundEvent GULP_SOUND = SoundEvent.of(new Identifier(MOD_ID, "gulp"));
+    
+    // Music Disc Sound Events
+    public static final SoundEvent MUSIC_DISC_OPENING_MELODY = registerSoundEvent("music_disc_opening_melody");
+    public static final SoundEvent MUSIC_DISC_TITLE_THEME = registerSoundEvent("music_disc_title_theme");
+    public static final SoundEvent MUSIC_DISC_FLOWER_GARDEN = registerSoundEvent("music_disc_flower_garden");
+    public static final SoundEvent MUSIC_DISC_ATHLETIC_THEME = registerSoundEvent("music_disc_athletic_theme");
+    public static final SoundEvent MUSIC_DISC_FLUFFY_SNOW = registerSoundEvent("music_disc_fluffy_snow");
     public static DamageSource of(World world, RegistryKey<DamageType> key) {
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));
     }
@@ -43,11 +50,18 @@ public class Yoshi implements ModInitializer {
         ModPackets.registerPackets();
         ServerTickHandler.register();
         
+        // Register blocks
+        online.inklingyoshi.yoshi.block.YoshiBlocks.registerBlocks();
+        
         // Register items
         YoshiItems.registerItems();
         
         // Register entity types
         YoshiEntityType.registerEntityTypes();
+        
+        // Register event handlers
+        online.inklingyoshi.yoshi.event.GoldenAppleEventHandler.register();
+        online.inklingyoshi.yoshi.event.PlayerDeathEventHandler.register();
         
         // Register sound events
         Registry.register(Registries.SOUND_EVENT, new Identifier(MOD_ID, "flutter_jump"), FLUTTER_JUMP_SOUND);
@@ -64,5 +78,9 @@ public class Yoshi implements ModInitializer {
         });
         
         // LOGGER.info("Yoshi mod initialized successfully!");
+    }
+    private static SoundEvent registerSoundEvent(String name) {
+        Identifier id = new Identifier(MOD_ID, name);
+        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
     }
 }
