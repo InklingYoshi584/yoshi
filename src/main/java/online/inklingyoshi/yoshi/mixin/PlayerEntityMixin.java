@@ -32,6 +32,7 @@ public class PlayerEntityMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity)(Object)this;
+        if (player.isSpectator()) return;
         boolean hasYoshiAbilities = AbilityManager.canPlayerUseAbilities(player);
         boolean hasSpeedAbility = AbilityManager.canPlayerUseAbility(player, "speed");
         boolean hasJumpHeightAbility = AbilityManager.canPlayerUseAbility(player, "jump_height");

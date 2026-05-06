@@ -10,7 +10,6 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
 import online.inklingyoshi.yoshi.entity.YoshiEggEntity;
 import online.inklingyoshi.yoshi.item.YoshiItems;
 
@@ -32,9 +31,8 @@ public class YoshiEggEntityRenderer extends EntityRenderer<YoshiEggEntity> {
         // Scale the egg to match the larger hitbox
         matrices.scale(1f, 1f, 1f);
         
-        // Rotate the egg based on its motion
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(entity.getYaw(tickDelta)));
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(entity.getPitch(tickDelta)));
+        // Billboarding: face the camera like vanilla thrown items
+        matrices.multiply(this.dispatcher.getRotation());
         
         // Render the Yoshi egg item
         ItemStack itemStack = new ItemStack(YoshiItems.YOSHI_EGG);

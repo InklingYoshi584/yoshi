@@ -39,7 +39,7 @@ public class YoshiClient implements ClientModInitializer {
             if (KeyBindings.REEL_IN.wasPressed()) {
                 // LOGGER.info("Reel-in key pressed");
                 // Start reel-in ability
-                if (client.player != null) {
+                if (client.player != null && !client.player.isSpectator()) {
                     boolean canUse = CooldownManager.canUseAbility(client.player, "reel_in");
                     int cooldown = CooldownManager.getCooldown(client.player, "reel_in");
                     // LOGGER.info("Reel-in ability check: canUse={}, cooldown={}", canUse, cooldown);
@@ -60,7 +60,7 @@ public class YoshiClient implements ClientModInitializer {
             if (KeyBindings.CREATE_EGG.wasPressed()) {
                 // LOGGER.info("Create egg key pressed");
                 // Handle create egg ability
-                if (client.player != null) {
+                if (client.player != null && !client.player.isSpectator()) {
                     boolean canUse = CooldownManager.canUseAbility(client.player, "create_egg");
                     int cooldown = CooldownManager.getCooldown(client.player, "create_egg");
                     // LOGGER.info("Create egg ability check: canUse={}, cooldown={}", canUse, cooldown);
@@ -80,7 +80,7 @@ public class YoshiClient implements ClientModInitializer {
         if (KeyBindings.GROUND_POUND.wasPressed()) {
             // LOGGER.info("Ground pound key pressed");
             // Handle ground pound ability
-            if (client.player != null) {
+            if (client.player != null && !client.player.isSpectator()) {
                 boolean canUse = CooldownManager.canUseAbility(client.player, "ground_pound");
                 int cooldown = CooldownManager.getCooldown(client.player, "ground_pound");
                 // LOGGER.info("Ground pound ability check: canUse={}, cooldown={}", canUse, cooldown);
@@ -98,7 +98,7 @@ public class YoshiClient implements ClientModInitializer {
         }
         
         // Update reel-in ability only if there's an active target
-        if (client.player != null && reelInAbility.isReeling()) {
+        if (client.player != null && !client.player.isSpectator() && reelInAbility.isReeling()) {
             // LOGGER.info("Updating reel-in ability for active target");
             reelInAbility.updateReelIn(client.player);
         }
@@ -128,7 +128,7 @@ public class YoshiClient implements ClientModInitializer {
             }
             
             // Check if player is in midair and holding spacebar
-            if (!player.isOnGround() && !player.isTouchingWater() && jumpKey.isPressed() && !player.isFallFlying() && !player.isCreative()) {
+            if (!player.isOnGround() && !player.isTouchingWater() && jumpKey.isPressed() && !player.isFallFlying() && !player.isCreative() && !player.isSpectator()) {
                 // LOGGER.info("Flutter jump conditions met: onGround={}, touchingWater={}, jumpPressed={}, velocityY={}", 
                     // player.isOnGround(), player.isTouchingWater(), jumpKey.isPressed(), player.getVelocity().y);
                 // LOGGER.info("wasFluttering={}", wasFluttering);

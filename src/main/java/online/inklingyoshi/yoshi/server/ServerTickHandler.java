@@ -45,14 +45,17 @@ public class ServerTickHandler {
             
             // Update reel-in abilities
             server.getPlayerManager().getPlayerList().forEach(player -> {
+                if (player.isSpectator()) return;
                 if (reelInAbilities.containsKey(player)) {
                     ReelInData data = reelInAbilities.get(player);
                     updateReelIn(player, data);
                 }
                 
                 // Update ground pound abilities
-                online.inklingyoshi.yoshi.ability.GroundPoundAbility.onPlayerTick(player);
-                online.inklingyoshi.yoshi.ability.GroundPoundAbility.handleEndLag(player);
+                if (!player.isSpectator()) {
+                    online.inklingyoshi.yoshi.ability.GroundPoundAbility.onPlayerTick(player);
+                    online.inklingyoshi.yoshi.ability.GroundPoundAbility.handleEndLag(player);
+                }
                 
                 // Update golden egg manager
                 online.inklingyoshi.yoshi.util.GoldenEggManager.onPlayerTick(player);

@@ -23,7 +23,8 @@ public class ModPackets {
             // System.out.println("Server: Received flutter jump packet for player " + player.getName().getString() + 
             //     " - isHoldingJump=" + isHoldingJump + ", shouldResetCD=" + shouldResetCD);
             
-            server.execute(() -> {  
+            server.execute(() -> {
+                if (player.isSpectator()) return;
                 if (isHoldingJump) {
                     if (shouldResetCD) {
                         CooldownManager.startCooldown(player, "flutter_jump");
@@ -134,6 +135,7 @@ public class ModPackets {
             // System.out.println("Server: Received reel-in packet for player " + player.getName().getString());
             
             server.execute(() -> {
+                if (player.isSpectator()) return;
                 // Check if player has reel-in ability enabled
                 boolean hasReelInAbility = AbilityManager.canPlayerUseAbility(player, "reel_in");
                 if (!hasReelInAbility) {
@@ -166,6 +168,7 @@ public class ModPackets {
             // System.out.println("Server: Received create egg packet for player " + player.getName().getString());
             
             server.execute(() -> {
+                if (player.isSpectator()) return;
                 // Check if player has create egg ability enabled
                 boolean hasCreateEggAbility = AbilityManager.canPlayerUseAbility(player, "create_egg");
                 if (!hasCreateEggAbility) {
@@ -219,6 +222,7 @@ public class ModPackets {
             // System.out.println("Server: Received ground pound packet for player " + player.getName().getString());
             
             server.execute(() -> {
+                if (player.isSpectator()) return;
                 // Check if player has ground pound ability enabled
                 boolean hasGroundPoundAbility = AbilityManager.canPlayerUseAbility(player, "ground_pound");
                 if (!hasGroundPoundAbility) {

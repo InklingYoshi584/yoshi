@@ -2,7 +2,6 @@ package online.inklingyoshi.yoshi.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
-import net.minecraft.item.MusicDiscItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -32,19 +31,19 @@ public class YoshiItems {
         
         // Register Music Discs
         MUSIC_DISC_OPENING_MELODY = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "music_disc_opening_melody"), 
-            new MusicDiscItem(1, Yoshi.MUSIC_DISC_OPENING_MELODY, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 120));
+            new YoshiMusicDiscItem(1, Yoshi.MUSIC_DISC_OPENING_MELODY, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 123));
         
         MUSIC_DISC_TITLE_THEME = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "music_disc_title_theme"), 
-            new MusicDiscItem(2, Yoshi.MUSIC_DISC_TITLE_THEME, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 180));
+            new YoshiMusicDiscItem(2, Yoshi.MUSIC_DISC_TITLE_THEME, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 183));
         
         MUSIC_DISC_FLOWER_GARDEN = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "music_disc_flower_garden"), 
-            new MusicDiscItem(3, Yoshi.MUSIC_DISC_FLOWER_GARDEN, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 150));
+            new YoshiMusicDiscItem(3, Yoshi.MUSIC_DISC_FLOWER_GARDEN, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 153));
         
         MUSIC_DISC_ATHLETIC_THEME = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "music_disc_athletic_theme"), 
-            new MusicDiscItem(4, Yoshi.MUSIC_DISC_ATHLETIC_THEME, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 140));
+            new YoshiMusicDiscItem(4, Yoshi.MUSIC_DISC_ATHLETIC_THEME, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 143));
         
         MUSIC_DISC_FLUFFY_SNOW = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "music_disc_fluffy_snow"), 
-            new MusicDiscItem(5, Yoshi.MUSIC_DISC_FLUFFY_SNOW, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 160));
+            new YoshiMusicDiscItem(5, Yoshi.MUSIC_DISC_FLUFFY_SNOW, new Item.Settings().maxCount(1).rarity(Rarity.RARE), 163));
         
         // Register Golden Egg Item
         GOLDEN_EGG = Registry.register(Registries.ITEM, new Identifier(Yoshi.MOD_ID, "golden_egg"), 
